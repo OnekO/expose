@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  expose:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - PORT=3001
+    container_name: "expose"
+    environment:
+      - DOMAIN=home.oneko.eu
+    ports:
+      - 3001
+    labels:
+      - "traefik.docker.network=proxied_traefik"
+      - "traefik.s1.frontend.rule=Host:api.helpdesk.lan"
+      - "traefik.s1.port=81"
+      - "traefik.s2.frontend.rule=Host:helpdesk.lan"
+      - "traefik.s2.port=82"
+
+networks:
+  proxied_traefik:
+    external: true
